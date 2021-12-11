@@ -26,4 +26,6 @@ extern int gfx_draw_char  ( const char  c,   int x, int y, float s);
 extern int gfx_draw_text  ( const char *str, int x, int y, float s);
 extern int gfx_chars_width( const char *str);
 extern int gfx_font_height( void );
+
+extern char GAME_DIR[ PATH_MAX ];
 #endif

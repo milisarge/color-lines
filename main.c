@@ -1,7 +1,31 @@
-#include "main.h"
+//#include "main.h"
+#include <SDL.h>
+#include <SDL_thread.h>
+
+#include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
+
+
+#include <limits.h>
+#include <unistd.h>
+#include <pwd.h>
+
+
+#define _max(a,b) (((a)>(b))?(a):(b))   // developer: 'max' was a global define, so it was replaced to '_max'
+#define _min(a,b) (((a)<(b))?(a):(b))   // developer: 'min' was a global define, so it was replaced to '_min'
+
+#define SCREEN_W 800
+#define SCREEN_H 480
+
 #include "board.h"
 #include "graphics.h"
 #include "sound.h"
+
+void track_switch(void);
+char GAME_DIR[ PATH_MAX ];
 
 #define SIZE_STEPS  16
 static char SAVE_PATH   [ PATH_MAX ];
@@ -1289,11 +1313,14 @@ int WINAPI WinMain (HINSTANCE hInstance,
 	
 int main(int argc, char **argv) {
 	
+    printf("1----\n");
 	char config_dir[ PATH_MAX ];
 	struct passwd *pw = getpwuid(getuid());
 	
 	uint32_t c = sizeof(GAME_DIR);
-	
+	strncpy(GAME_DIR, argv[0], c);
+	//c = strlen(GAME_DIR);
+	/*
 	#if defined MACOS
 		_NSGetExecutablePath(GAME_DIR, &c);
 		puts("This is macOS");
@@ -1314,7 +1341,7 @@ int main(int argc, char **argv) {
 	#else
 		strncpy(GAME_DIR, argv[0], c);
 	#endif
-
+    */
 	strcpy(config_dir, (pw ? pw->pw_dir : "/tmp"));
 	strcat(config_dir, "/.config");
 	strcpy(SAVE_PATH  , config_dir); strcat(SAVE_PATH  , "/color-lines/save");
@@ -1334,6 +1361,7 @@ int main(int argc, char **argv) {
 	} while (GAME_DIR[c] != '/');
 	
 	GAME_DIR[c + 1] = '\0';
+	printf("----\n");
 	
 #endif
 	// Initialize SDL

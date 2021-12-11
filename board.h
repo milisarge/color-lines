@@ -6,7 +6,7 @@
 #define POOL_SIZE 3
 #define BALLS_ROW 5
 
-enum {
+extern enum {
 	ball1 = 1,
 	ball2,
 	ball3,

@@ -16,4 +16,6 @@ extern void snd_play(int sample, int cnt);
 extern void snd_music_start(short num, char *name);
 extern void snd_music_stop(void);
 extern void snd_volume(short vol);
+extern char GAME_DIR[ PATH_MAX ];
+extern void track_switch(void);
 #endif

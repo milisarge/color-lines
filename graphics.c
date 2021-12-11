@@ -4,6 +4,7 @@
 #include "graphics.h"
 #include "math.h"
 
+
 static SDL_Window *sdlWindow;
 static SDL_Renderer *sdlRenderer;
 static SDL_Texture *sdlTexture;
