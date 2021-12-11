@@ -1,4 +1,3 @@
-//#include "main.h"
 #include <SDL.h>
 #include <SDL_thread.h>
 
@@ -1289,60 +1288,12 @@ static void game_restart(bool clean)
 	game_unlock();
 }
 
-#if defined WINDOWS
-
-int WINAPI WinMain (HINSTANCE hInstance,
-                    HINSTANCE hPrevInstance,
-                    PSTR szCmdLine,
-                    int iCmdShow) {
-
-	size_t c = sizeof(GAME_DIR);
-	GetModuleFileName(NULL, GAME_DIR, c);
-
-	char config_dir[ PATH_MAX ];
-	SHGetFolderPath( NULL,
-		CSIDL_FLAG_CREATE | CSIDL_LOCAL_APPDATA,
-		NULL,
-		0,
-		(LPTSTR)config_dir );
-	
-	strcpy( PREFS_PATH, ( strlen( config_dir ) ? config_dir : "." ));
-	fprintf(stderr,"prefsdir:   %s\n", appdir);
-
-#else
-	
 int main(int argc, char **argv) {
 	
-    printf("1----\n");
-	char config_dir[ PATH_MAX ];
 	struct passwd *pw = getpwuid(getuid());
-	
+        char config_dir[ PATH_MAX ];	
 	uint32_t c = sizeof(GAME_DIR);
 	strncpy(GAME_DIR, argv[0], c);
-	//c = strlen(GAME_DIR);
-	/*
-	#if defined MACOS
-		_NSGetExecutablePath(GAME_DIR, &c);
-		puts("This is macOS");
-	#elif defined LINUX
-		if (readlink("/proc/self/exe", GAME_DIR, c) != -1);
-			puts("This is Linux");
-		c = strlen(GAME_DIR);
-	#elif defined SOLARIS
-		strcpy(GAME_DIR, getexecname());
-		puts("This is Solaris");
-	#elif defined FREEBSD
-		sysctl({CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1}, 4, GAME_DIR, &c, NULL, 0);
-		puts("This is FreeBSD");
-	#elif defined NETBSD
-		if (readlink("/proc/curproc/exe", GAME_DIR, c) != -1);
-			puts("This is NetBSD");
-		c = strlen(GAME_DIR);
-	#else
-		strncpy(GAME_DIR, argv[0], c);
-	#endif
-    */
-	strcpy(config_dir, (pw ? pw->pw_dir : "/tmp"));
 	strcat(config_dir, "/.config");
 	strcpy(SAVE_PATH  , config_dir); strcat(SAVE_PATH  , "/color-lines/save");
 	strcpy(SCORES_PATH, config_dir); strcat(SCORES_PATH, "/color-lines/scores");
@@ -1361,9 +1312,7 @@ int main(int argc, char **argv) {
 	} while (GAME_DIR[c] != '/');
 	
 	GAME_DIR[c + 1] = '\0';
-	printf("----\n");
 	
-#endif
 	// Initialize SDL
 	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO) < 0) {
 		fprintf(stderr, "Couldn't initialize SDL: %s\n", SDL_GetError());
